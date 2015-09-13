@@ -4,13 +4,14 @@
 
 #define BUFFER_SIZE 192
 
+//strcpyn(buffer, 192, argv[1], strlen(argv[1]))
 void strcpyn(char * destination, unsigned int destination_length, char * source, unsigned int source_length)
 {
 	unsigned int i;
 	
 	for (i = 0; i <= destination_length && i <= source_length; i++)
 		destination[i] = source[i];
-	//i <= strlen(argv[1]) && i<=192
+	//i <= strlen(argv[1]) && i<=192 , we will overwrite by one byte, which is the frame pointer?
 	//buff[i]
 }
 

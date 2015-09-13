@@ -37,6 +37,9 @@ int main(int argc, char * argv[])
 	//using -1,$EGG where egg is size 300
 	//the cursor check gets 0, the strlen check gets 1
 	//the sizeof & feed count are read in as unsigned long, so if you use a negative number it will say the sizeof check is true
+	//go higher than maxint! 2147483647
+	//214748467 or so
+	//used payload size 20000, offset 0, input num 2147484647 to crack
 	if ((*cursor != ',') || (strlen(cursor + 1) < sizeof(struct live_feed) * feed_count))
 	{
 		fprintf(stderr, "Usage: %s [number of tweets],[data]\n", argv[0]);

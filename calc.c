@@ -7,7 +7,7 @@ int main(int argc, char * argv[])
 	int i;
 	unsigned long j;
 	int k;
-	unsigned long l;
+	long l;
 	char * ptr;
 	char * ptr2;
 	char * ptr3;
