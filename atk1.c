@@ -4,8 +4,8 @@
 
 #include <stdlib.h>
 
-#define DEFAULT_OFFSET                    0
-#define DEFAULT_BUFFER_SIZE             300
+#define DEFAULT_OFFSET                 464
+#define DEFAULT_BUFFER_SIZE            300
 #define NOP                            0x90
 
 char shellcode[] =
