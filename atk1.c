@@ -32,7 +32,7 @@ void main(int argc, char *argv[]) {
   }
 
   addr = get_sp() - offset;
-  printf("Using address: 0x%x\n", addr);
+  // printf("Using address: 0x%x\n", addr);
 
   ptr = buff;
   addr_ptr = (long *) ptr;

